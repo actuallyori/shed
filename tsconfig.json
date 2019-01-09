@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"lib": ["es6"],
+		"sourceMap": true,
+		"allowJs": true,
+		"jsx": "react",
+		"outDir": "./dist/",
+		"module": "commonjs",
+		"strictNullChecks": true,
+		"removeComments": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"moduleResolution": "node",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"resolveJsonModule": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules/*", "dist/"]
+}
