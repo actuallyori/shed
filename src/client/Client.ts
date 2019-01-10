@@ -14,10 +14,10 @@ export class Client extends EventEmitter {
 	public disgd: Discord.Client;
 	public options: IClientOptions;
 
-	private commands: Discord.Collection<string, Command>;
-
 	public gameManager: GameManager;
 	public partyManager: PartyManager;
+
+	private commands: Discord.Collection<string, Command>;
 
 	constructor(options: IClientOptions) {
 		super();
@@ -32,6 +32,16 @@ export class Client extends EventEmitter {
 		this.prepareClient();
 	}
 
+	public addCommand(command: Command) {
+		this.commands.set(command.options.name, command);
+		return this;
+	}
+
+	public async start() {
+		console.log("Starting...");
+		await this.disgd.login(this.options.token);
+		console.log("[ READY ]");
+	}
 	private prepareClient() {
 		this.disgd.on("message", (msg) => {
 			if (msg.cleanContent.startsWith(this.options.prefix)) {
@@ -58,16 +68,5 @@ export class Client extends EventEmitter {
 				}
 			}
 		});
-	}
-
-	public addCommand(command: Command) {
-		this.commands.set(command.options.name, command);
-		return this;
-	}
-
-	public async start() {
-		console.log("Starting...");
-		await this.disgd.login(this.options.token);
-		console.log("[ READY ]");
 	}
 }

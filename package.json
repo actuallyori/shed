@@ -1,13 +1,18 @@
 {
-  "name": "shed",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "@types/node": "^10.12.18",
-    "discord.js": "^11.4.2"
-  },
-  "devDependencies": {
-    "typescript": "^3.2.2"
-  }
+	"name": "shed",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "ts-node src/tools/runFrontend",
+		"prestart": "tslint --project ./"
+	},
+	"dependencies": {
+		"@types/node": "^10.12.18",
+		"discord.js": "^11.4.2"
+	},
+	"devDependencies": {
+		"tslint": "^5.12.0",
+		"typescript": "^3.2.2"
+	}
 }

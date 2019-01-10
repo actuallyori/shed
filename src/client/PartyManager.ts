@@ -10,11 +10,22 @@ export class PartyManager {
 		this.partyStore = new Discord.Collection();
 	}
 
-	public createParty() {
-		const party = new PartyInstance();
-		this.partyStore.set(party.id, party);
-		return party;
+	public createParty(guildId: string) {
+		const party = new PartyInstance(this, guildId);
+		console.log(
+			"[PARTY] Created party ID",
+			party.id,
+			"in guild ID",
+			party.guildId,
+		);
+		return this.partyStore.get(party.id) as PartyInstance;
 	}
+
+	public delete(party: PartyInstance) {
+		this.partyStore.delete(party.id);
+		return;
+	}
+
 	public isInParty(guild: string, member: Discord.GuildMember) {
 		if (this.partyStore.find((v) => v.hasMember(guild, member))) {
 			return true;
@@ -28,8 +39,15 @@ export class PartyManager {
 	}
 
 	public getPartiesInGuild(guild: string, open?: boolean) {
-		return this.partyStore.filter(
-			(v) => v.guildId === guild && (open ? v.open : true),
-		);
+		return this.partyStore
+			.filter((v) => v.guildId === guild && (open ? v.open : true))
+			.array();
+	}
+
+	public sync(party: PartyInstance) {
+		console.log("[PARTY] Syncing party ID", party.id);
+		return this.partyStore
+			.set(party.id, party)
+			.get(party.id) as PartyInstance;
 	}
 }

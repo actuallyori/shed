@@ -47,18 +47,42 @@ ${c.partyManager
 						);
 					} else {
 						const p = c.partyManager
-							.createParty()
+							.createParty(m.guild.id)
 							.addMember(m.member);
 						embed.setTitle("Party Created").setDescription(
 							`Sucessfully created your party! You can invite people using \`$party invite <tag|id>\`, or view party info by running \`$party\`.
 
 Your party ID: \`${p.id}\`.`,
 						);
-						return m.channel.send({ embed });
 					}
+					return m.channel.send({ embed });
 				}
 				case "leave": {
-					break;
+					if (!c.partyManager.getMemberParty(m.guild.id, m.member)) {
+						embed.setDescription(
+							"You aren't in a party, so there's no need to leave!",
+						);
+					} else {
+						const p = c.partyManager.getMemberParty(
+							m.guild.id,
+							m.member,
+						);
+						p.removeMember(m.member);
+						if (
+							c.partyManager
+								.getPartiesInGuild(m.guild.id)
+								.filter((v) => v.id === p.id).length === 0
+						) {
+							embed.setDescription(
+								`You disbanded party ID \`${p.id}\`.`,
+							);
+						} else {
+							embed.setDescription(
+								`You left party ID \`${p.id}\`.`,
+							);
+						}
+					}
+					return m.channel.send({ embed });
 				}
 				default: {
 					console.log(a[0]);
